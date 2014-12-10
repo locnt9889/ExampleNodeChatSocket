@@ -1,0 +1,20 @@
+#!/usr/bin/env node
+var debug = require('debug')('ExampleNode');
+var app = require('../app');
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
+
+app.set('port', 4000);
+
+io.on('connection', function(socket){
+  socket.on('chat message', function(msg){
+    console.log("chat server log : " + msg);
+    io.emit('chat message', msg);
+  });
+});
+
+var server = app.listen(app.get('port'), function() {
+  debug('Express server listening on port ' + server.address().port);
+});
+
+
